@@ -8,6 +8,15 @@
 		</div>
 	@endif
 	<h2>Usuarios</h2>
+	<ol class="breadcrumb p-0">
+	    <li>
+	        <a href="#">Inicio</a>
+	    </li>
+	    <li class="text-muted">
+	        Todos los usuarios
+	    </li>
+	</ol>
+	<br>
 	<hr>
 	<div class="card">
 		<div class="card-header">

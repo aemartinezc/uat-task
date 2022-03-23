@@ -1,20 +1,30 @@
 @extends('layouts.app')
-@section('title', 'Añadir nuevo usuario')
+@section('title', 'Añadir nuevo proyecto')
 @section('main')
-
-<h2>Añadir nuevo usuario</h2>
-<ol class="breadcrumb p-0">
-    <li>
-        <a href="#">Inicio</a>
-    </li>
-    <li>
-        <a href="{{route('users.index')}}">Todos los usuarios</a>
-    </li>
-    <li class="text-muted">
-        Nuevo usuario
-    </li>
-</ol>
-<br>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <h1 class="h2 mb-0">Resumen de Proyectos</h1>
+      <ol class="breadcrumb p-0">
+        <li>
+          <a href="#">Inicio</a>
+        </li>
+        <li>
+          <a href="#">Todos los proyectos</a>
+        </li>
+        <li class="text-muted">
+          nuevo
+        </li>
+      </ol>
+    </div>
+    <div class="col-md-6">
+      <div class="text-right">
+        <a href="purchase-order.html" class="btn btn btn-success">
+          <i class="material-icons md-18 align-middle">add</i>
+          <span class="align-middle">Nuevo Proyecto</span>
+        </a>
+      </div>
+    </div>
+  </div>
 <p class="lead">Los campos marcados con <code>(*)</code> son obligatorios</p>
 @if (count($errors) > 0)
   <div class="alert alert-danger">
@@ -57,18 +67,7 @@
                     <input type="password" class="form-control" name="confirm-password" placeholder="Password">
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="inputPassword" class="col-sm-2 col-form-label">Asignar roles</label>
-                <div class="col-sm-6">
-                  <select class="form-control multiple" name="roles">
-                    <option value="">Seleccione</option>
-                    @foreach ($roles as $key => $value)
-                      <option value="{{$value->name}}">{{$value->name}}</option>
-                    @endforeach
-                  </select>
-                </div>
-            </div>
-          </div>
+      </div>
       <div class="card-footer text-center">
           <button type="submit" class="btn btn-primary mr-2">Guardar</button>
           <a class="btn btn-secondary" href="{{ route('users.index') }}"> Volver</a>

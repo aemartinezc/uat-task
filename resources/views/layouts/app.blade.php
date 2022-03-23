@@ -151,12 +151,25 @@ document.getElementById('logout-form').submit();">
                 </div>
               </div>
               <!-- HEADING -->
+
+              <div class="py-2 drawer-heading">
+                Proyectos
+              </div>
+              <ul class="drawer-menu" id="pagesMenu" data-children=".drawer-submenu">
+                <li class="drawer-menu-item">
+                  <a href="{{route('projects.index')}}">
+                    <i class="material-icons">dns</i>
+                    <span class="drawer-menu-text"> Proyectos</span>
+                  </a>
+                </li>
+              </ul>
+
               <div class="py-2 drawer-heading">
                 Configuración
               </div>
               <ul class="drawer-menu" id="pagesMenu" data-children=".drawer-submenu">
                 <li class="drawer-menu-item">
-                  <a href="#">
+                  <a href="{{route('users.index')}}">
                     <i class="material-icons">account_circle</i>
                     <span class="drawer-menu-text">Usuarios</span>
                   </a>
@@ -208,10 +221,15 @@ document.getElementById('logout-form').submit();">
                 </a>
               </li>
               <li class="drawer-menu-item">
-                <a href="login.html">
-                  <i class="material-icons">exit_to_app</i>
-                  <span class="drawer-menu-text"> Salir</span>
-                </a>
+                <a href="{{ route('logout') }} "
+                onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();"
+                ><i class="material-icons">exit_to_app</i>
+                <span class="drawer-menu-text"> Salir</span></a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
+
               </li>
             </ul>
           </nav>
