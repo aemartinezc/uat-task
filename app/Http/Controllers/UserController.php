@@ -48,7 +48,7 @@ class UserController extends Controller
 
               "Editar" => [
                 "icon" => "edit blue",
-                "href" => "/usuarios/$value->id/edit"
+                "href" => "/users/$value->id/edit"
               ],
               "Eliminar" => [
                 "icon" => "edit blue",

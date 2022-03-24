@@ -34,9 +34,12 @@ class ProyectosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function nuevaTarea($id)
     {
-        return view('proyectos.create');
+        $data['id'] = $id;
+        $data['hitos'] = Hito::where('activo',1)->get();
+        $data['grupos'] = Grupo::where('activo',1)->get();
+        return view('proyectos.nuevaTarea')->with($data);
     }
 
     /**
@@ -47,7 +50,22 @@ class ProyectosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+          //dd($request->all());
+          $tareas = new Tarea();
+          $tareas->tarea = $request->nombre;
+          $tareas->descripcion = $request->descripcion;
+          $tareas->id_proyecto = $request->id;
+          $tareas->prioridad = $request->prioridad;
+          $tareas->id_grupo = $request->grupo;
+          $tareas->id_hito = $request->hito;
+          $tareas->save();
+          return response()->json(['success'=>'Registro agregado satisfactoriamente']);
+
+        } catch (\Exception $e) {
+          dd($e->getMessage());
+        }
+
     }
 
     /**
@@ -59,11 +77,11 @@ class ProyectosController extends Controller
     public function show($id)
     {
       $proyecto = Proyecto::find($id);
-      $hitos = Hito::where('id_proyecto', $proyecto->id)->with('Tareas')->get()->toArray();
+      $hitos = Hito::where([['id_proyecto', $proyecto->id],['activo',1]])->with('Tareas')->get()->toArray();
       //dd($hitos);
       $id = $id;
       $tareasr = DB::table('t_tareas')->where('id_proyecto', $proyecto->id)->take(5)->get();
-      $grupos = Grupo::where('id_proyecto', $proyecto->id)->with('Rel')->get()->toArray();
+      $grupos = Grupo::where([['id_proyecto', $proyecto->id],['activo',1]])->with('Rel')->get()->toArray();
       $actividad = Bitacora::where('id_proyecto', $proyecto->id)->get();
       //$grupos = DB::table('t_grupos')->where('id_proyecto', $proyecto->id)->get();
 
@@ -79,13 +97,24 @@ class ProyectosController extends Controller
     public function edit($id)
     {
       $proyecto = Proyecto::find($id);
-      $hitos = Hito::where('id_proyecto', $proyecto->id)->with('Tareas')->get()->toArray();
+      $hitos = Hito::where([['id_proyecto', $proyecto->id],['activo',1]])->with('Tareas')->get()->toArray();
       //dd($proyecto,$hitos);
       $data['id'] = $id;
       $data['hitos'] = $hitos;
       $data['proyecto'] = $proyecto;
       //dd($data['hitos']);
       return view('proyectos.edit')->with($data);
+    }
+
+    public function editTarea($id){
+      $tareas = Tarea::find($id);
+      //dd($tareas);
+      $data['id'] = $tareas->id_proyecto;
+      $data['id_tarea'] = $id;
+      $data['hitos'] = Hito::where('activo',1)->get();
+      $data['grupos'] = Grupo::where('activo',1)->get();
+      $data['tareas'] = Tarea::find($id);
+      return view('proyectos.nuevaTarea')->with($data);
     }
 
     /**
@@ -95,9 +124,23 @@ class ProyectosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      try {
+        $tareas = Tarea::find($request->id_tarea);
+        $tareas->tarea = $request->nombre;
+        $tareas->descripcion = $request->descripcion;
+        $tareas->id_proyecto = $request->id;
+        $tareas->prioridad = $request->prioridad;
+        $tareas->id_grupo = $request->grupo;
+        $tareas->id_hito = $request->hito;
+        $tareas->save();
+        return response()->json(['success'=>'Ha sido editado con éxito']);
+
+      } catch (\Exception $e) {
+          dd($e->getMessage());
+      }
+
     }
 
     /**
@@ -106,8 +149,13 @@ class ProyectosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+     public function destroy(Request $request)
+     {
+
+       $tareas = Tarea::find($request->id_user);
+       $tareas->activo = 0;
+       $tareas->save();
+       return response()->json(['success'=>'Eliminado exitosamente']);
+
+     }
 }

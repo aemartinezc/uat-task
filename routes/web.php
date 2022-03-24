@@ -18,10 +18,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+/////////////////// USUARIOS //////////////////////////
 Route::resource('/users', 'UserController');
 Route::delete('/users/borrar', 'UserController@destroy');
+////////////////// PROYECTOS ////////////////////////////////
 Route::resource('/projects', 'ProyectosController');
+Route::get('/projects/{id}/nuevaTarea', 'ProyectosController@nuevaTarea');
+Route::post('/projects/createTarea', 'ProyectosController@store');
+Route::delete('/projects/borrar', 'ProyectosController@destroy');
+Route::get('/projects/{id}/nuevaTareaEdit', 'ProyectosController@editTarea');
+Route::post('/projects/update', 'ProyectosController@update');
 
+////////////////// HITOS ///////////////////////////////////////////
 Route::prefix('hitos')->group(function() {
     Route::get('/', 'HitosController@index');
     Route::get('/tablahitos', 'HitosController@tablahitos');
@@ -31,7 +39,7 @@ Route::prefix('hitos')->group(function() {
     Route::get('/{id}/edit', 'HitosController@edit');
     Route::post('/update', 'HitosController@update');
 });
-
+//////////////////////// GRUPOS ///////////////////////////////
 Route::prefix('grupos')->group(function() {
     Route::get('/', 'GruposController@index');
     Route::get('/tablagrupos', 'GruposController@tablagrupos');

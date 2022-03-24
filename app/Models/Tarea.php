@@ -20,5 +20,17 @@ class Tarea extends Model {
     ];
   protected $table = 't_tareas';
 
+	public function obtenerProyecto(){
+    return $this->hasOne('\App\Models\Proyecto', 'id', 'id_proyecto');
+  }
+
+	public function obtenerGrupo(){
+    return $this->hasOne('\App\Models\Grupo', 'id', 'id_grupo');
+  }
+
+	public function obtenerHito(){
+    return $this->hasOne('\App\Models\Hito', 'id', 'id_hito');
+  }
+
 
 }

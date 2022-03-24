@@ -40,10 +40,14 @@
                     <i class="material-icons md-18 align-middle">replay</i>
                     <small class="align-middle text-uppercase">Regresar</small>
                     </a>
+                    <a href="/projects/{{$id}}/nuevaTarea" class="btn btn-sm btn-white">
+                    <i class="material-icons md-18 align-middle">add</i>
+                    <small class="align-middle text-uppercase">Agregar Tarea</small>
+                    </a>
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table m-0">
+                <table class="table m-0" id="tabla_tareas">
                     <thead>
                         <tr class="bg-fade">
                             <!-- <th style="width: 80px;">
@@ -71,7 +75,7 @@
 
                           <tr>
                               <td class="align-middle">
-                                  <a href="#">{{$dp['tarea']}}</a>
+                                  <a href>{{$dp['tarea']}}</a>
                               </td>
                               <td class="align-middle">
                                   <div class="media">
@@ -89,7 +93,7 @@
                                   <div class="badge badge-primary">BAJA</div>
                                   @elseif($dp['prioridad'] == 2)
                                   <div class="badge badge-warning">MEDIA</div>
-                                  @else
+                                  @elseif($dp['prioridad'] == 3)
                                   <div class="badge badge-danger">ALTA</div>
                                   @endif
 
@@ -108,22 +112,14 @@
                                       </a>
 
                                       <div class="dropdown-menu">
-                                          <a class="dropdown-item" href="#">
+                                          <a class="dropdown-item" href="/projects/{{$dp['id']}}/nuevaTareaEdit">
                                             <i class="material-icons md-14 align-middle">edit</i>
-                                            <span class="align-middle">Edit</span>
+                                            <span class="align-middle">Editar</span>
                                           </a>
-                                          <!-- <a class="dropdown-item" href="#">
-                                            <i class="material-icons md-14 align-middle">content_copy</i>
-                                            <span class="align-middle">Duplicate</span>
-                                          </a>
-                                          <a class="dropdown-item" href="#">
-                                            <i class="material-icons md-14 align-middle">favorite_border</i>
-                                            <span class="align-middle">Mark as favourite</span>
-                                          </a> -->
                                           <div class="dropdown-divider"></div>
-                                          <a class="dropdown-item text-danger" href="#">
+                                          <a class="dropdown-item text-danger" onclick="eliminar({{$dp['id']}})">
                                             <i class="material-icons md-14 align-middle">delete</i>
-                                            <span class="align-middle">Delete</span>
+                                            <span class="align-middle">Eliminar</span>
                                           </a>
                                       </div>
                                   </div>
@@ -162,5 +158,43 @@
         </div>
     </div>
 
+<script type="text/javascript">
+  function eliminar(id){
+    var id_user = id;
+    Swal.fire({
+          title: "¿Estas seguro?",
+          text: "No podrás revertir esto!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Si, bórralo!"
+      }).then(function(result) {
+          if (result.value) {
 
+            $.ajax({
+
+               type:"Delete",
+
+               url:"/projects/borrar",
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data:{
+              id_user:id_user,
+               },
+
+                success:function(data){
+                  Swal.fire("Excelente!", data.success, "success").then(function(){
+                    $('#tabla_tareas').load(location.href + " #tabla_tareas");
+                   });
+
+                }
+
+
+            });
+
+
+          }
+      })
+  }
+</script>
 @endsection

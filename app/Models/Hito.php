@@ -15,7 +15,7 @@ class Hito extends Model {
   protected $table = 't_hitos';
 
   public function Tareas(){
-    return $this->hasMany('App\Models\Tarea', 'id_hito', 'id');
+    return $this->hasMany('App\Models\Tarea', 'id_hito', 'id')->where('activo',1);
   }
 
 	public function obtenerProyecto(){
