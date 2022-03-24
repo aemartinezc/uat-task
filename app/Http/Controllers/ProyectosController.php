@@ -61,12 +61,13 @@ class ProyectosController extends Controller
       $proyecto = Proyecto::find($id);
       $hitos = Hito::where('id_proyecto', $proyecto->id)->with('Tareas')->get()->toArray();
       //dd($hitos);
+      $id = $id;
       $tareasr = DB::table('t_tareas')->where('id_proyecto', $proyecto->id)->take(5)->get();
       $grupos = Grupo::where('id_proyecto', $proyecto->id)->with('Rel')->get()->toArray();
       $actividad = Bitacora::where('id_proyecto', $proyecto->id)->get();
       //$grupos = DB::table('t_grupos')->where('id_proyecto', $proyecto->id)->get();
 
-      return view('proyectos.show', compact('proyecto', 'hitos', 'tareasr', 'grupos','actividad'));
+      return view('proyectos.show', compact('proyecto', 'hitos', 'tareasr', 'grupos', 'id','actividad'));
     }
 
     /**
@@ -77,7 +78,14 @@ class ProyectosController extends Controller
      */
     public function edit($id)
     {
-        //
+      $proyecto = Proyecto::find($id);
+      $hitos = Hito::where('id_proyecto', $proyecto->id)->with('Tareas')->get()->toArray();
+      //dd($proyecto,$hitos);
+      $data['id'] = $id;
+      $data['hitos'] = $hitos;
+      $data['proyecto'] = $proyecto;
+      //dd($data['hitos']);
+      return view('proyectos.edit')->with($data);
     }
 
     /**

@@ -89,6 +89,7 @@ document.getElementById('logout-form').submit();">
   <title>Administrador de Proyectos | @yield('title')</title>
   <!-- Prevent the demo from appearing in search engines -->
   <meta name="robots" content="noindex">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- App CSS -->
   <link type="text/css" href="/assets/css/app.css" rel="stylesheet">
   <link type="text/css" href="/assets/css/app.rtl.css" rel="stylesheet">
@@ -181,13 +182,13 @@ document.getElementById('logout-form').submit();">
                   </a>
                 </li>
                 <li class="drawer-menu-item">
-                  <a href="#">
+                  <a href="/hitos">
                     <i class="material-icons">list</i>
                     <span class="drawer-menu-text">Hitos</span>
                   </a>
                 </li>
                 <li class="drawer-menu-item">
-                  <a href="#">
+                  <a href="/grupos">
                     <i class="material-icons">list</i>
                     <span class="drawer-menu-text">Grupos</span>
                   </a>
@@ -256,6 +257,7 @@ document.getElementById('logout-form').submit();">
   <script src="/assets/vendor/dom-factory.js"></script>
   <!-- DOM Factory -->
   <script src="/assets/vendor/material-design-kit.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   @yield('script')
   <!-- MDK -->
   <script>

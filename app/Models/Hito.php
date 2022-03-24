@@ -9,12 +9,17 @@ class Hito extends Model {
 	protected $fillable = [
       'id',
       'nombre',
-      'id_proyecto'
+      'id_proyecto',
+			'activo'
     ];
   protected $table = 't_hitos';
 
   public function Tareas(){
     return $this->hasMany('App\Models\Tarea', 'id_hito', 'id');
+  }
+
+	public function obtenerProyecto(){
+    return $this->hasOne('\App\Models\Proyecto', 'id', 'id_proyecto');
   }
 
 }

@@ -1,20 +1,14 @@
 @extends('layouts.app')
-@section('title', 'Usuarios')
+@section('title', 'Grupos')
 @section('main')
 
-	<!--begin::Card-->
-	@if ($message = Session::get('success'))
-		<div class="alert alert-success">
-			<p>{{ $message }}</p>
-		</div>
-	@endif
-	<h2>Usuarios</h2>
+	<h2>Grupos</h2>
 	<ol class="breadcrumb p-0">
 	    <li>
 	        <a href="#">Inicio</a>
 	    </li>
 	    <li class="text-muted">
-	        Todos los usuarios
+	        Todos los grupos
 	    </li>
 	</ol>
 	<br>
@@ -22,21 +16,19 @@
 	<div class="card">
 		<div class="card-header">
 			<h4 class="card-title">
-				Listado de usuarios
+				Listado de grupos
 			</h4>
 			<div class="text-right">
-				<a href="{{route('users.create')}}" type="button" class="btn btn-primary btn-sm">Añadir nuevo</a>
+				<a href="/grupos/create" type="button" class="btn btn-primary btn-sm">Añadir nuevo</a>
 			</div>
 		</div>
 		<div class="py-4">
 			<div class="table-responsive">
-				<table class="table table-bordered table-checkable" id="usuarios">
+				<table class="table table-bordered table-checkable" id="grupos">
 					<thead>
 						<tr>
-							<th>ID</th>
 							<th>Nombre</th>
-							<th>Correo</th>
-							<th>Fecha</th>
+							<th>Proyecto</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
@@ -52,18 +44,16 @@
 		<script>
 		var table = '';
 		$(document).ready(function() {
-		    table = $('#usuarios').DataTable({
+		    table = $('#grupos').DataTable({
 		    processing: true,
 		    serverSide: true,
 		    ajax: {
-		      url: "{{ route('users.index') }}",
+		      url: "/grupos",
 		    },
 		    language: { url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
 		    columns: [
-		      { data: 'id', name: 'id'},
-		      { data: 'name', name: 'name'},
-		      { data: 'email', name: 'email' },
-					{ data: 'created_at', name: 'created_at' },
+		      { data: 'nombre', name: 'nombre'},
+		      { data: 'id_proyecto', name: 'id_proyecto'},
 					{ data: 'acciones', name: 'acciones', searchable: false, orderable:false, width: '60px', class: 'acciones' }
 		    ],
 				createdRow: function ( row, data, index ) {
@@ -90,7 +80,7 @@
 
 									 type:"Delete",
 
-									 url:"/users/borrar",
+									 url:"/grupos/borrar",
 									 headers: {
 										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 									 },

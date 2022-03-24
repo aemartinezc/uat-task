@@ -11,6 +11,7 @@ use DB;
 use Hash;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
+use Yajra\Datatables\Datatables;
 
 class UserController extends Controller
 {
@@ -31,10 +32,35 @@ class UserController extends Controller
     {
       if ($request->ajax()) {
         $usuarios = User::orderBy('created_at','DESC')
-        ->select('id', 'name', 'email', 'created_at')
+        ->select('id', 'name', 'email', 'created_at')->where('activo',1)
           ->get();
-          return datatables()->of($usuarios)
+
+          $datatable = DataTables::of($usuarios)
+          //return datatables()->of($usuarios)
+          // ->editColumn('email_verified_at', function ($registros) {
+          //   return 'epale';
+          // })
           ->make(true);
+          $data = $datatable->getData();
+          foreach ($data->data as $key => $value) {
+
+            $acciones = [
+
+              "Editar" => [
+                "icon" => "edit blue",
+                "href" => "/usuarios/$value->id/edit"
+              ],
+              "Eliminar" => [
+                "icon" => "edit blue",
+                "onclick" => "eliminar($value->id)"
+              ],
+            ];
+
+
+          $value->acciones = generarDropdown($acciones);
+          }
+          $datatable->setData($data);
+          return $datatable;
         }
         return view('users.index');
     }
@@ -144,10 +170,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success','Usario eliminado satisfactoriamente');
+
+      $usuario = User::find($request->id_user);
+      $usuario->activo = 0;
+      $usuario->save();
+      return response()->json(['success'=>'Eliminado exitosamente']);
+
+      // $usuario =   User::find($request->id_user)->delete();
+        // return redirect()->route('users.index')
+        //                 ->with('success','Usario eliminado satisfactoriamente');
+        // return $usuario;
     }
 }

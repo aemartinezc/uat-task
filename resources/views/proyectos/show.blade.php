@@ -188,7 +188,7 @@
       @endforeach
 
       <li class="list-group-item text-center">
-        <a href="project-tasks.html">Ver todas</a>
+        <a href="/projects/{{$id}}/edit">Ver todas</a>
       </li>
     </ul>
   </div>
